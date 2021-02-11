@@ -1,0 +1,36 @@
+type Student{
+	id : ID
+	name : String
+	marks : Int
+}
+
+input StudentInput{
+	id : ID
+	name : String
+	marks : Int
+}
+
+
+type StudentVersionInfo{
+	student: Student
+	version : String
+	revisionType : String
+	date : String
+}
+
+type Query {
+    getAllStudents:[Student]
+    getInfo(id: Int!):Student
+    getAllRevisionInfo(id: Int!): [StudentVersionInfo]
+}
+
+type Mutation{
+	insertStudent(studentInput:StudentInput) : Student!
+	updateStudent(studentInput:StudentInput) : Student!
+	deleteStudent(StudentId: Int) : String
+}
+
+schema{
+	  query: Query
+	  mutation: Mutation
+}
