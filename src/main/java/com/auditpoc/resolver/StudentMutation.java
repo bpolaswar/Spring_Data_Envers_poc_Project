@@ -1,10 +1,10 @@
-package com.auditpoc.graphqlresolver;
+package com.auditpoc.resolver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.auditpoc.entity.Student;
-import com.auditpoc.graphql.model.StudentInput;
+import com.auditpoc.model.StudentInput;
 import com.auditpoc.service.StudentService;
 
 import graphql.kickstart.tools.GraphQLMutationResolver;

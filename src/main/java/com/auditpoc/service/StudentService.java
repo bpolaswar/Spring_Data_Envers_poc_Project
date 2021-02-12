@@ -3,19 +3,33 @@ package com.auditpoc.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
+import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.history.Revision;
 import org.springframework.stereotype.Service;
 
+import com.auditpoc.entity.QStudent;
 import com.auditpoc.entity.Student;
-import com.auditpoc.graphql.model.StudentInput;
-import com.auditpoc.graphql.model.StudentVersionInfo;
+import com.auditpoc.model.StudentInput;
+import com.auditpoc.model.StudentVersionInfo;
 import com.auditpoc.repository.StudentRepository;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Service
 public class StudentService {
+//	 public static final QStudent student = new QStudent("student");
 	@Autowired
 	private StudentRepository studentRepository;
+	
+	@PersistenceContext
+	EntityManager entityManager;
 
 	public Student insertStudent(StudentInput studentInput) {
 		Student student = Student.builder().name(studentInput.getName()).active(true).marks(studentInput.getMarks())
@@ -33,9 +47,22 @@ public class StudentService {
 		return null;
 	}
 
+	@Audited
+	@Transactional
 	public String deleteStudent(long id) {
-		studentRepository.deleteStudent(id);
-		return "Deleted";
+		QStudent student = QStudent.student;
+//		EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.auditpoc.entity");
+//		EntityManager em = emf.createEntityManager();
+		JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+//		studentRepository.deleteStudent(id);s
+		long del = queryFactory.update(student).where(student.id.eq(id)).set(student.active, false).execute();
+//		Student exiStudent = studentRepository.findById(id).get();
+//		if(null != exiStudent) {
+//			exiStudent.setActive(false);
+//			studentRepository.save(exiStudent);
+//		}
+//		
+		return " Record Deleted";
 	}
 
 	public List<Student> getAllStudents() {

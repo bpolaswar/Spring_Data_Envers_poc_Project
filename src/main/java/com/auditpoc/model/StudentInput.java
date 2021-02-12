@@ -1,4 +1,4 @@
-package com.auditpoc.graphql.model;
+package com.auditpoc.model;
 
 import lombok.Data;
 

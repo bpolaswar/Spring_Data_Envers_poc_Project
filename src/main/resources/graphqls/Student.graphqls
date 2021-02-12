@@ -2,12 +2,14 @@ type Student{
 	id : ID
 	name : String
 	marks : Int
+	active : Boolean
 }
 
 input StudentInput{
 	id : ID
 	name : String
 	marks : Int
+	active : Boolean
 }
 
 
